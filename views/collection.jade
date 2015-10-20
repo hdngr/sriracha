@@ -1,0 +1,34 @@
+extends ./layout
+
+block content
+    .container-fluid
+      // Page Heading
+      .row
+        .col-lg-12
+          h1.page-header
+            | #{Model.modelName}
+          ol.breadcrumb
+            li
+              i.fa.fa-dashboard
+              a(href=appPath) Admin
+            li.active
+              i.fa.fa-
+              |  #{Model.modelName + 's'}
+      // /.row
+      .row
+        .col-md-10
+          h2 #{Model.modelName + 's'}
+          .table-responsive
+            table.table.table-bordered.table-hover.table-striped
+              thead
+                tr
+                  each value, field in Model.schema.paths
+                    if Model.schema.paths[field].options.admin
+                      | #{Model.schema.paths[field].options.admin}
+                      th= field
+              tbody
+                each doc in docs
+                    tr
+                        each field in Object.keys(Model.schema.paths)
+                            td 
+                                a(href="/admin/#{Model.collection.name}/#{doc.id}") #{doc[field]}
