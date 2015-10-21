@@ -8,6 +8,8 @@ var express = require('express'),
     Post = require('./models/Post'),
     admin = require('../../');
 
+debugger;
+
 var dbURL = 'mongodb://localhost/siracha-simple-example';
 
 mongoose.connect(dbURL);
@@ -27,22 +29,13 @@ var server = app.listen(3000, function() {
 
 server.on('close', function(done) { 
     console.log('Closing simple example app port %s', 3000);
-    mock.destroy()
-    // async.series([
-    //     function(callback){ 
-    //         mock.destroy();
-    //         callback();
-    //     }, 
-    //     function(callback){
-    //         mongoose.disconnect();
-    //         callback();
-    //         done();
-    //     }]);
 });
 
 process.on('SIGINT', function() {
-  server.close();
-  process.kill(0);
+  mock.destroy(function() {
+    server.close();
+    process.kill(0);
+  });
 });
 
 module.exports = server;

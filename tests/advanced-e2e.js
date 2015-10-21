@@ -4,21 +4,29 @@
 var assert = require('assert');
 var request = require('supertest');
 var should = require('should');
-var mongoose = require('mongoose');
 
 describe('advanced e2e tests', function() {
   var agent;
   var server;
 
   before(function(done) {
+    var mongoose = require('mongoose');
+    mongoose.connection.models = {};
+    mongoose.models = {};
+    if(mongoose.connection.readyState === 1) {
+      mongoose.disconnect();
+    };
+    console.log('starting advanced server');
     server = require('../examples/advanced/server');
     agent = request.agent(server);
-    done();
+    return done();
   });
 
   after(function(done) {
-    mongoose.disconnect();
-    server.close(done);
+    var mock = require('../examples/advanced/mock');
+    console.log('closing advanced server');
+    server.close();
+    mock.destroy(done);
   });
 
 

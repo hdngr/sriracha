@@ -4,23 +4,29 @@
 var assert = require('assert');
 var request = require('supertest');
 var should = require('should');
-var mongoose = require('mongoose');
-
 
 describe('initial e2e tests simple', function() {
   var agent;
   var server;
   
   before(function(done) {
+    var mongoose = require('mongoose');
+    mongoose.connection.models = {};
+    mongoose.models = {};
+    if(mongoose.connection.readyState === 1) {
+      mongoose.disconnect();
+    };
+    console.log('starting simple server');
     server = require('../examples/simple/server');
     agent = request.agent(server);
-    done();
+    return done();
   });
   
   after(function(done) {
-    mongoose.disconnect();
+    var mock = require('../examples/simple/mock');
+    console.log('closing simple server');
     server.close();
-    done();
+    mock.destroy(done);
   });
 
   describe('/admin is the mount path and', function() {

@@ -15,7 +15,7 @@ module.exports = function(options) {
 
     var options = require('./options')(options);
     var models;
-    
+
     // models default to all models in a Mongoose connection
     if(options.models.length > 0) {
         models = options.models.map(function(name) {

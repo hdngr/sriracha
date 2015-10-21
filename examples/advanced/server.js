@@ -27,19 +27,13 @@ var server = app.listen(3000, function() {
 
 server.on('close', function(done) { 
     console.log('Closing advanced example app port %s', 3000);
-        async.series([
-        function(callback){mock.destroy(callback)}, 
-        function(callback){
-            mongoose.disconnect();
-            callback();
-        }], 
-        function() { done() 
-        });
 });
 
 process.on('SIGINT', function() {
-  server.close();
-  process.kill(0);
+  mock.destroy(function() {
+    server.close();
+    process.kill(0);
+  });
 });
 
 module.exports = server;

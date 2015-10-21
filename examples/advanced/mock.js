@@ -37,9 +37,9 @@ module.exports = {
             console.warn("Other collections exist in " + db.name + "!");
             return done
         };
-        return db.db.dropDatabase(function(err, result) {
+        db.db.dropDatabase(function(err, result) {
             if (err) console.dir(err);
-            return result;
+            return done();
         });
     }
 }
