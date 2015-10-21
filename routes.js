@@ -26,7 +26,6 @@ module.exports = {
 
         Model.find({}, function(err, docs) {
             if(err) res.send(500);
-            debugger;
             res.render('collection', {docs: docs, Model: Model});
         });
     },
@@ -43,9 +42,5 @@ module.exports = {
             res.render('model', {doc: doc, Model: Model});
         });
         res.render('model');
-        // User.findById(id, function(err, user) {
-        //     if(err) return res.send(err);
-        //     res.render('user', {user: user});
-        // });
     }
 };

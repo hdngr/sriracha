@@ -1,6 +1,6 @@
 {
-  "name": "express-mongo-admin",
-  "version": "0.0.1",
+  "name": "Siracha",
+  "version": "0.0.0",
   "description": "An admin middleware for mongoose and express.",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.13.3",
     "jade": "^1.11.0",
+    "lodash": "^3.10.1",
     "mongoose": "^4.1.12"
   },
   "devDependencies": {

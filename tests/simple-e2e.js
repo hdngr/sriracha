@@ -2,18 +2,35 @@
 
 // import the moongoose helper utilities
 var assert = require('assert');
-var User = require('../examples/models/User');
 var request = require('supertest');
-var mongoose = require('mongoose');
-var server = require('../examples/server');
-var agent = request.agent(server);
-var mock = require('../examples/mock/simple');
 var should = require('should');
+var mongoose = require('mongoose');
 
-describe('model routes', function() {
+
+describe('initial e2e tests simple', function() {
+  var agent;
+  var server;
+  
   before(function(done) {
-    mock.init(done);
+    server = require('../examples/simple/server');
+    agent = request.agent(server);
+    done();
   });
+  
+  after(function(done) {
+    mongoose.disconnect();
+    server.close();
+    done();
+  });
+
+  describe('/admin is the mount path and', function() {
+    it('should respond with a status code of 200', function(done) {
+      agent.get('/admin')
+      .expect(200)
+      .end(done);
+    });
+  });
+
   describe('/admin/users', function() {
     it('should respond with status code 200', function(done) {
       agent.get('/admin/users')
@@ -45,8 +62,4 @@ describe('model routes', function() {
       .end(done);
     });
   });
-
-  after(function(done) {
-      mock.destroy(done);
-    })
 });
