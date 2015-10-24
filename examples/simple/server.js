@@ -8,7 +8,6 @@ var express = require('express'),
     Post = require('./models/Post'),
     admin = require('../../');
 
-debugger;
 
 var dbURL = 'mongodb://localhost/siracha-simple-example';
 
@@ -32,8 +31,8 @@ server.on('close', function(done) {
 });
 
 process.on('SIGINT', function() {
+  server.close();
   mock.destroy(function() {
-    server.close();
     process.kill(0);
   });
 });

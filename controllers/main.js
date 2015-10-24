@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash');
+
 module.exports = {
     main: function(req, res, next) {
         // if(!req.user || !req.user.isAdmin()) {
@@ -17,21 +19,20 @@ module.exports = {
     profile: function(req, res) {
         res.send("This is the profile page!");
     },
-    model: function(req, res) {
+    collection: function(req, res) {
         var collection = req.params.collection;
-        var models = req.app.locals.models;
-        var Model = models.filter(function(model) {
-            return collection === model.collection.name;
-        })[0];
-
-        Model.find({}, function(err, docs) {
+        var collections = req.app.locals.collections;
+        var collectionNames = req.app.locals.collectionNames;
+        var collectionName = collectionNames[collection];
+        var Collection = collections[collectionName];
+        Collection.find({}, function(err, docs) {
             if(err) res.send(500);
-            res.render('collection', {docs: docs, Model: Model});
+            res.render('collection', {docs: docs, Collection: Collection});
         });
     },
     modelDetail: function(req, res) {
         var collection = req.params.collection;
-        var models = req.app.locals.models;
+        var models = req.app.locals.AdminModels;
         var docId = req.params.doc;
 
         var Model = models.filter(function(model) {

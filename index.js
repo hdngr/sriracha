@@ -1,9 +1,10 @@
 'use strict';
 
 var express = require('express'),
-    routes = require('./routes'),
+    routes = require('./controllers/main'),
     mongoose = require('mongoose'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    Collection = require('./models/Collection');
 
 var admin = express();
 
@@ -14,48 +15,48 @@ admin.use('/static', express.static(__dirname + '/static'));
 module.exports = function(options) {
 
     var options = require('./options')(options);
-    var models;
+    var Models;
+    var collectionNames;
+    var collections;
+    var docs;
 
     // models default to all models in a Mongoose connection
     if(options.models.length > 0) {
-        models = options.models.map(function(name) {
+        Models = options.models.map(function(name) {
             return mongoose.models[name];
         });
     } else {
-        models = _.values(mongoose.models);
+        Models = mongoose.models;
     };
     
-    // models.forEach(function(model) {
-    //     for(var path in model.schema.paths) {
-    //         if(model.schema.paths[path].options.admin !== false) {
-    //             model.schema.paths[path].options.admin = true;
-    //         }
-    //     };
-    // });
+    // create map of plural collection names for easy lookup
+    // e.g. {'users': 'User', ...}
+    collectionNames = _.mapValues(_.mapKeys(Models, function(model) {
+        return model.collection.name;
+    }), function(model) {
+        return model.modelName;
+    });
 
+    // extend models with methods for use with Siracha
+    collections = _.mapValues(Models, function(model) {
+        return Collection(model, options);
+    });
 
-    admin.locals.models = models;
+    admin.locals._mongooseModels = Models;
+    admin.locals.collectionNames = collectionNames;
+    admin.locals.collections = collections;
     
+    // get mount path for use in routing static
     admin.use(function(req, res, next) {
         var mountpath = admin.mountpath;
         admin.locals.appPath = mountpath;
         next();
     });
 
-    var strategy = function(req, res, next) {
-        if(options.passport) {
-            return options.passport;
-        } else if (options.username && options.passport) {
-            return simple(req, res, next, options);
-        }
-
-    }
-
-    admin.set('views', __dirname + '/views');
-
+    
     admin.get('/', routes.main);
-    admin.post('/', strategy, routes.loginForm);
-    admin.get('/:collection', routes.model);
+    admin.post('/', routes.loginForm);
+    admin.get('/:collection', routes.collection);
     admin.get('/:collection/:doc', routes.modelDetail);
     
     return admin;

@@ -111,9 +111,9 @@ nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
   // Sidebar Menu Items - These collapse to the responsive navigation menu on small screens
   .collapse.navbar-collapse.navbar-ex1-collapse
     ul.nav.navbar-nav.side-nav
-      each model in models
+      each Collection in collections
         li
-          a(href=appPath + '/' + model.collection.name)
+          a(href=appPath + '/' + Collection.collection.name)
             i.fa.fa-fw.fa-users
-            |  #{model.modelName + 's'}
+            |  #{Collection.pluralName}
   // /.navbar-collapse

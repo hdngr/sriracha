@@ -6,29 +6,27 @@ block content
       .row
         .col-lg-12
           h1.page-header
-            | #{Model.modelName}
+            | #{Collection.pluralName}
           ol.breadcrumb
             li
               i.fa.fa-dashboard
               a(href=appPath) Admin
             li.active
               i.fa.fa-
-              |  #{Model.modelName + 's'}
+              |  #{Collection.pluralName}
       // /.row
       .row
         .col-md-10
-          h2 #{Model.modelName + 's'}
+          h2 #{Collection.pluralName}
           .table-responsive
             table.table.table-bordered.table-hover.table-striped
               thead
                 tr
-                  each value, field in Model.schema.paths
-                    if Model.schema.paths[field].options.admin
-                      | #{Model.schema.paths[field].options.admin}
-                      th= field
+                  each field in Collection.adminFields
+                    th= field
               tbody
                 each doc in docs
                     tr
-                        each field in Object.keys(Model.schema.paths)
+                        each field in Collection.adminFields
                             td 
-                                a(href="/admin/#{Model.collection.name}/#{doc.id}") #{doc[field]}
+                                a(href="/admin/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
