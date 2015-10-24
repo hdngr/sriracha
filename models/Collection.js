@@ -11,12 +11,12 @@ module.exports = function(MongooseModel, options) {
         adminFields: []
     }
     
-    var paths = Collection.schema.paths;
-    for (var path in paths) {
-        if(paths[path].options.admin !== false && options.hideFields.indexOf(path) === -1) {
-            statics.adminFields.push(path);
-        }
-    }
+    // var paths = Collection.schema.paths;
+    // for (var path in paths) {
+    //     if(paths[path].options.admin !== false && options.hideFields.indexOf(path) === -1) {
+    //         statics.adminFields.push(path);
+    //     }
+    // }
 
     _.extend(Collection, statics);
 

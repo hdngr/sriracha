@@ -30,7 +30,7 @@ describe('advanced e2e tests', function() {
   });
 
 
-  describe('crazy-mount-path is the mountpath', function() {
+  describe('crazy-mount-path is the mountpath', function(done) {
     it('/crazy-mount-path should respond with a status code of 200', function(done) {
       agent.get('/crazy-mount-path')
       .expect(200)
