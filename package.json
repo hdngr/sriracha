@@ -4,7 +4,7 @@
   "description": "An admin middleware for mongoose and express.",
   "main": "index.js",
   "scripts": {
-    "start": "gulp simple"
+    "start": "gulp simple",
     "test": "gulp test"
   },
   "author": "",
