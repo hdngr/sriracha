@@ -56,4 +56,29 @@ User name used to access admin backend.
     };
 
 ```
+
 ## Examples
+...
+
+## Contributing
+Contributing is anything from filing bugs, to requesting new features and identifying what layer to expose to other users for customization, to building features and their tests.  Here's how to use this repo:
+
+```
+# fork this repo
+git clone <your-awesome-fork>
+cd <your-awesome-fork>
+git checkout -b <your-awesome-feature>
+git branch -d master
+
+# You can serve the "simple" app in development by running
+# gulp simple
+# in all likelihood, you should add your feature and associated options
+# to the advanced app
+# serve the "advanced" app in development
+gulp advanced 
+# add your awesome feature
+# write some tests
+# run those tests
+gulp test
+
+# submit a pull request!
