@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/hdngr/siracha.svg?branch=master)](https://travis-ci.org/hdngr/siracha)
 # Siracha
 An admin Express app for Mongoose models.
 
