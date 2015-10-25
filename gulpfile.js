@@ -29,6 +29,9 @@ gulp.task('test', function() {
         // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha({
             reporter: 'nyan'
-            // bail: true
-        }));
+                // bail: true
+        }))
+        .once('end', function() {
+            process.exit();
+        });
 });
