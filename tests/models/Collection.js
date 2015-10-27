@@ -1,3 +1,4 @@
+'use strict';
 // var options = advancedOptions;
 // var mock = require('../../examples/simple/mock');
 // var User = require('../../examples/simple/models/User');
