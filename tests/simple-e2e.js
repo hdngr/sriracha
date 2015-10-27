@@ -5,7 +5,7 @@ var assert = require('assert');
 var request = require('supertest');
 var should = require('should');
 
-describe('initial e2e tests simple', function() {
+describe('simple e2e tests', function() {
   var agent;
   var server;
   

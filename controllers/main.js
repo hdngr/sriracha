@@ -1,6 +1,8 @@
 'use strict';
 
-var _ = require('lodash');
+var _ = require('lodash'),
+    Doc = require('../models/Document'),
+    paginate = require('../utils/paginate');
 
 module.exports = {
     main: function(req, res, next) {
@@ -8,11 +10,13 @@ module.exports = {
         //     return res.render('login');
         // }
         var user = req.user || {};
-        res.render('index', {user: user});
+        res.render('index', {
+            user: user
+        });
     },
     loginForm: function(req, res) {
         // if this is called, login was successful.
-        if(!req.user.isAdmin()) {
+        if (!req.user.isAdmin()) {
             return res.send(401)
         }
     },
@@ -25,23 +29,58 @@ module.exports = {
         var collectionNames = req.app.locals.collectionNames;
         var collectionName = collectionNames[collection];
         var Collection = collections[collectionName];
-        Collection.find({}, function(err, docs) {
-            if(err) res.send(500);
-            res.render('collection', {docs: docs, Collection: Collection});
-        });
-    },
-    modelDetail: function(req, res) {
-        var collection = req.params.collection;
-        var models = req.app.locals.AdminModels;
-        var docId = req.params.doc;
 
-        var Model = models.filter(function(model) {
-            return collection === model.collection.name;
-        })[0];
-        
-        Model.findById(id, function(err, doc) {
-            res.render('model', {doc: doc, Model: Model});
+        var perPage = 10
+        var page = req.query.page > 0 ? req.query.page : 0
+
+        Collection.find({})
+            .limit(perPage)
+            .skip(perPage * page)
+            // .sort() default sorting parameter from options...
+            .exec(function(err, docs) {
+                Collection.count().exec(function(err, count) {
+                    if (err) res.send(500);
+                    res.render('collection', {
+                        docs: docs,
+                        Collection: Collection,
+                        page: page,
+                        pages: count / perPage,
+                        paginate: paginate(req, res)
+                    });
+                });
+            });
+    },
+    doc: function(req, res) {
+        var collections = req.app.locals.collections;
+        var collection = req.app.locals.collectionNames[req.params.collection];
+        var id = req.params.doc;
+        var Collection = collections[collection];
+
+        Collection.findById(id, function(err, doc) {
+            doc = Doc(doc);
+            switch (req.method) {
+                case "GET":
+                    res.render('doc', {
+                        doc: doc,
+                        Collection: Collection,
+                        errors: {}
+                    });
+                    break;
+                case "POST":
+                    _.assign(doc, req.body);
+                    doc.save(function(err) {
+                        err = err || {};
+                        res.render('doc', {
+                            doc: doc,
+                            Collection: Collection,
+                            errors: err.errors || {}
+                        });
+                    });
+                    break;
+                default:
+                    debugger;
+            }
         });
-        res.render('model');
-    }
+        // res.render('model');
+    },
 };

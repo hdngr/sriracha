@@ -1,0 +1,6 @@
+.form-group(class=typeof errors[field] === "undefined" ? "" : "has-error")
+    .input-group
+        label.input-group-addon(for=field) #{field}
+        input.form-control(name=field, type='text', placeholder=field, autofocus='', value=doc[field])
+    if errors[field]
+        span.help-block.text-danger= errors[field].message

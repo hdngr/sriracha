@@ -20,5 +20,9 @@ var UserSchema = new Schema({
   }
 });
 
+UserSchema.path('email').validate(function(email) {
+  return email.length;
+}, 'Email cannot be blank');
+
 var User = mongoose.model('User', UserSchema);
 module.exports = User;

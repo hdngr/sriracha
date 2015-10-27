@@ -22,11 +22,17 @@ block content
             table.table.table-bordered.table-hover.table-striped
               thead
                 tr
+                  th #
                   each field in Collection.adminFields
                     th= field
               tbody
-                each doc in docs
+                each doc, i in docs
                     tr
+                      td= 10 * page + (i + 1)
                         each field in Collection.adminFields
                             td 
-                                a(href="/admin/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
+                                a(href="#{appPath}/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
+          if (pages > 1)
+            nav
+              ul.pagination
+                != paginate(pages, page)

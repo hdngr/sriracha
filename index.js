@@ -1,8 +1,9 @@
 'use strict';
 
 var express = require('express'),
-    routes = require('./controllers/main'),
     mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    routes = require('./controllers/main'),
     _ = require('lodash'),
     Collection = require('./models/Collection');
 
@@ -10,11 +11,13 @@ var admin = express();
 
 admin.set('view engine', 'jade');
 admin.set('views', __dirname + '/views');
+admin.use(bodyParser.urlencoded({ extended: false }));
 admin.use('/static', express.static(__dirname + '/static'));    
+
 
 module.exports = function(options) {
 
-    var options = require('./options')(options);
+    var options = require('./Options')(options);
     var Models;
     var collectionNames;
     var collections;
@@ -52,12 +55,12 @@ module.exports = function(options) {
         admin.locals.appPath = mountpath;
         next();
     });
-
     
     admin.get('/', routes.main);
     admin.post('/', routes.loginForm);
     admin.get('/:collection', routes.collection);
-    admin.get('/:collection/:doc', routes.modelDetail);
+    admin.get('/:collection/:doc', routes.doc);
+    admin.post('/:collection/:doc', routes.doc);
     
     return admin;
 };

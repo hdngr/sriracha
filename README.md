@@ -8,23 +8,24 @@ Siracha is an Express app that can be mounted to any url in your app.  The admin
 ## Quick Start
 ...
 ## Options
-Options can be set globally through the options object passed to admin, or on individual Mongoose Schemas.
+Options can be set globally through the options object passed to admin, or on individual Mongoose Schemas.  The cleanest way to define options related to an individual model is directly on the Schema itself.  However setting options via the options object, is offered as a convenience method.
 
-Globally:
+### Setting Options Globally:
 
 ```
 app.use('/admin', admin(models, {...}));
 ``` 
 
-Schema:
+#### Options:
+
+**username** *default - 'admin'*    
+User name used to access admin backend. 
+
+#### Setting Options on a Schema:
 
 ```
-var UserSchema = new Schema({
+var SomeSchema = new Schema({
   firstName: {
-    type: String,
-    default: ''
-  },
-  lastName: {
     type: String,
     default: ''
   },
@@ -33,19 +34,18 @@ var UserSchema = new Schema({
     default: '',
     unique: true
   },
+  comments: {
+    type: String,
+    adminFieldType: 'textarea'
+  },
   hashed_password: {
     type: String,
     default: '',
     admin: false
-    }
+  },
+  ...
 });
 ```
-
-### Global options
-
-**username** *default - 'admin'*    
-User name used to access admin backend. 
-
 
 ```
     var defaults = {
@@ -81,5 +81,11 @@ gulp advanced
 # write some tests
 # run those tests
 gulp test
+# debug those tests
+mocha --debug-brk tests
+# in another tab
+node-inspector
 
+# tests pass
 # submit a pull request!
+```
