@@ -6,22 +6,14 @@ var _ = require('lodash'),
 
 module.exports = {
     main: function(req, res, next) {
-        // if(!req.user || !req.user.isAdmin()) {
-        //     return res.render('login');
-        // }
         var user = req.user || {};
-        res.render('index', {
-            user: user
-        });
+        res.render('index');
     },
     loginForm: function(req, res) {
         // if this is called, login was successful.
         if (!req.user.isAdmin()) {
             return res.send(401)
         }
-    },
-    profile: function(req, res) {
-        res.send("This is the profile page!");
     },
     collection: function(req, res) {
         var collection = req.params.collection;
@@ -33,10 +25,24 @@ module.exports = {
         var perPage = 10
         var page = req.query.page > 0 ? req.query.page : 0
 
+        var sortField = req.query.sortField;
+        var criteria = req.query.criteria;
+        if(!criteria) {
+            res.locals.criteria = criteria =  1
+        } else {
+            res.locals.criteria = criteria = -criteria
+        }
+
+        var sort;
+        if(sortField) {
+            sort = {};
+            sort[sortField] = criteria;
+        }
+
         Collection.find({})
             .limit(perPage)
             .skip(perPage * page)
-            // .sort() default sorting parameter from options...
+            .sort(sort) // default sorting parameter from options...
             .exec(function(err, docs) {
                 Collection.count().exec(function(err, count) {
                     if (err) res.send(500);

@@ -3,19 +3,20 @@
 var User = require('./models/User');
 var Post = require('./models/Post');
 var async = require('async');
+var _ = require('lodash');
 
 module.exports = {
     init: function(done) {
         function createDocs() {
-            var raw = [{
-                firstName: "John",
-                email: "John@example.com"
-            }, {
-                firstName: "Jack",
-                email: "Jack@another.com"
-            }];
-            for (var i = 0; i < raw.length; i++) {
-                var author = new User(raw[i]).save(function(err, doc) {
+            var firstNames = ["John", "Kellen", "Jim", "Susan", "Chantelle", "Siracha"];
+            var lastNames = ["Sartre", "Johnson", "Richardson", "Gerrard"];
+            for (var i = 0; i < 20; i++) {
+                var firstName = _.sample(firstNames);
+                var author = new User({
+                    firstName: firstName,
+                    lastName: _.sample(lastNames),
+                    email: firstName + "@gmail.com"
+                }).save(function(err, doc) {
                     if (!doc) return doc;
                     var post = new Post({
                         title: "A Blog Post!",

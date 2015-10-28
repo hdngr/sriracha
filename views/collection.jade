@@ -25,6 +25,8 @@ block content
                   th #
                   each field in Collection.adminFields
                     th= field
+                      a(href="?sortField=" + field + "&criteria=" + (criteria || ''))
+                        i.fa.fa-sort.pull-right
               tbody
                 each doc, i in docs
                     tr
