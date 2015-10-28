@@ -16,6 +16,7 @@ module.exports = {
             }];
             for (var i = 0; i < raw.length; i++) {
                 var author = new User(raw[i]).save(function(err, doc) {
+                    if (!doc) return doc;
                     var post = new Post({
                         title: "A Blog Post!",
                         author: doc._id
@@ -31,7 +32,6 @@ module.exports = {
         // it is unclear how to 'abort' if database already exists
         // this is a dirty check to make sure developer has not already
         // made other collections in the database before we destroy it 
-        debugger;
         var db = User.db;
         if (Object.keys(db.collections).length > 2) {
             console.warn("Other collections exist in " + db.name + "!");

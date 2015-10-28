@@ -19,16 +19,19 @@ block content
               |  #{doc.id}
 
       .row
-        form.col-xs-8.col-xs-offset-2(action="" method="post")
-          each field in Collection.adminFields
-            case doc.getFieldType(field)
-              when 'text'
-                include ./fields/text
-              when 'checkbox'
-                include ./fields/checkbox
-              when 'ref'
-                include ./fields/ref
-          button.btn.btn-default(type='submit') Save
+        .col-xs-8.col-xs-offset-2
+          form(action="", method="post")
+            each field in Collection.adminFields
+              case doc.getFieldType(field)
+                when 'text'
+                  include ./fields/text
+                when 'checkbox'
+                  include ./fields/checkbox
+                when 'ref'
+                  include ./fields/ref
+            button.btn.btn-success.pull-left(type='submit') Save
+          form.pull-right(method="post" action="?_method=DELETE")
+            button.btn.btn-danger(type='submit') Delete
                     
           
           //- p #{doc[field]}

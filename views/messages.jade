@@ -1,0 +1,14 @@
+- var i
+- if (message.success && message.success.length)
+  .alert.alert-success.alert-dismissable
+    button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
+    - for (i = 0; i < message.success.length; i++)
+      .center!= message.success[i]
+- if (message.error && message.error.length)
+  .alert.alert-danger.alert-dismissable
+    button.close(type="button", data-dismiss="alert", aria-hidden="true") &times;
+    - for (i = 0; i < message.error.length; i++)
+      .center!= message.error[i]
+
+- message.info = message.success = message.error = []
+    

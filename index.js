@@ -3,6 +3,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
     routes = require('./controllers/main'),
     _ = require('lodash'),
     Collection = require('./models/Collection');
@@ -12,6 +13,7 @@ var admin = express();
 admin.set('view engine', 'jade');
 admin.set('views', __dirname + '/views');
 admin.use(bodyParser.urlencoded({ extended: false }));
+admin.use(methodOverride('_method'));
 admin.use('/static', express.static(__dirname + '/static'));    
 
 
@@ -56,11 +58,21 @@ module.exports = function(options) {
         next();
     });
     
+    admin.use(function (req, res, next) {
+        if(!req.session) {
+            req.session = {}
+        };
+        req.session.message = req.session.message || { error: [], success: [], info: [] };
+        admin.locals.message  = req.session.message;
+        next();
+    });
+
     admin.get('/', routes.main);
     admin.post('/', routes.loginForm);
     admin.get('/:collection', routes.collection);
     admin.get('/:collection/:doc', routes.doc);
     admin.post('/:collection/:doc', routes.doc);
+    admin.delete('/:collection/:doc', routes.doc);
     
     return admin;
 };

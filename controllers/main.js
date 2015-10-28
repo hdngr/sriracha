@@ -55,6 +55,7 @@ module.exports = {
         var collection = req.app.locals.collectionNames[req.params.collection];
         var id = req.params.doc;
         var Collection = collections[collection];
+        var appPath = req.app.locals.appPath;
 
         Collection.findById(id, function(err, doc) {
             doc = Doc(doc);
@@ -77,8 +78,29 @@ module.exports = {
                         });
                     });
                     break;
+                case "DELETE":
+                    doc.remove(function(err) {
+                        if (err) {
+                            err = err || {};
+                            var message = "Oops! Looks like there was an error!"
+                            req.session.message.error.push(message);
+                            return res.render('doc', {
+                                doc: doc,
+                                Collection: Collection,
+                                errors: err.errors || {}
+                            });
+                        }
+                        var message = "Doc " + doc.id + " deleted successfully!";
+                        req.session.message.success.push(message);
+                        res.redirect(appPath + '/' + doc.collection.name);
+                    })
+                    break;
                 default:
-                    debugger;
+                    res.render('doc', {
+                        doc: doc,
+                        Collection: Collection,
+                        errors: {}
+                    });
             }
         });
         // res.render('model');

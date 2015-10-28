@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express'),
+    session = require('express-session'),
     mongoose = require('mongoose'),
     async = require('async'),
     mock = require('./mock'),
@@ -13,6 +14,12 @@ var dbURL = 'mongodb://localhost/siracha-advanced-example';
 mongoose.connect(dbURL);
 
 var app = express();
+
+// sessions are required in order to display success and error messages
+app.use(session({ 
+    secret: 'keyboard cat',
+    saveUninitialized: true
+})); 
 
 app.use('/crazy-mount-path', admin());
 

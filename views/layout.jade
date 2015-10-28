@@ -25,12 +25,16 @@ html(lang='en')
     #wrapper
       include ./nav
       #page-wrapper
+        include ./messages
         block content
 
-    script(src='#{appPath}/static/js/jquery.js')
-    // Bootstrap Core JavaScript
-    script(src='#{appPath}/static/js/bootstrap.min.js')
-    // Morris Charts JavaScript
-    script(src='#{appPath}/static/js/plugins/morris/raphael.min.js')
-    script(src='#{appPath}/static/js/plugins/morris/morris.min.js')
-    script(src='#{appPath}/static/js/plugins/morris/morris-data.js')
+    block scripts
+      script(type="text/javascript" src='#{appPath}/static/js/jquery.js')
+      // Bootstrap Core JavaScript
+      script(src='#{appPath}/static/js/bootstrap.min.js')
+      // Morris Charts JavaScript
+      script(src='#{appPath}/static/js/plugins/morris/raphael.min.js')
+      script(src='#{appPath}/static/js/plugins/morris/morris.min.js')
+      script(src='#{appPath}/static/js/plugins/morris/morris-data.js')
+      script.
+        window.setTimeout(function() { $(".alert").alert('close'); }, 5000);
