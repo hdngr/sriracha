@@ -111,4 +111,28 @@ module.exports = {
         });
         // res.render('model');
     },
+    suggest: function(req, res) {
+        var term = req.body.term;
+
+        var collection = req.params.collection;
+        var collections = req.app.locals.collections;
+        var collectionNames = req.app.locals.collectionNames;
+        var collectionName = collectionNames[collection];
+        var Collection = collections[collectionName];
+
+        var query = {};
+        query[Collection.searchField] = new RegExp(term, 'i');
+        Collection.find(query)
+        .select('email id')
+        .limit(10)
+        .exec(function(err, docs) {
+            var results = _.map(docs, function(doc) {
+                return {
+                    value: doc[Collection.searchField],
+                    id: doc.id
+                }
+            });
+            res.json(results);
+        });
+    }
 };

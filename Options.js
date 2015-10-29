@@ -2,8 +2,7 @@
 
 var _ = require('lodash');
 
-module.exports = function(options) {
-    var options = options || {};
+module.exports = function(options) {    
     
     var defaults = {
         username: 'admin',

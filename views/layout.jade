@@ -32,9 +32,15 @@ html(lang='en')
       script(type="text/javascript" src='#{appPath}/static/js/jquery.js')
       // Bootstrap Core JavaScript
       script(src='#{appPath}/static/js/bootstrap.min.js')
+      // Search suggestions
+      script(src='#{appPath}/static/js/plugins/typeahead/bootstrap3-typeahead.min.js')
+      script(src='#{appPath}/static/js/plugins/typeahead/bloodhound.min.js')
+
       // Morris Charts JavaScript
       script(src='#{appPath}/static/js/plugins/morris/raphael.min.js')
       script(src='#{appPath}/static/js/plugins/morris/morris.min.js')
       script(src='#{appPath}/static/js/plugins/morris/morris-data.js')
-      script.
+      
+      script(type='text/javascript').
+        //- close alerts after 5 seconds
         window.setTimeout(function() { $(".alert").alert('close'); }, 5000);

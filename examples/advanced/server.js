@@ -21,7 +21,9 @@ app.use(session({
     saveUninitialized: true
 })); 
 
-app.use('/crazy-mount-path', admin());
+app.use('/crazy-mount-path', admin({User: {
+  searchField: 'email'}
+}));
 
 app.get('/', function(req, res) {
     res.send('This is the index route.  You are probably looking for the <a href="/crazy-mount-path">Advanced App</a> route!');

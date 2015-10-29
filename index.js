@@ -17,9 +17,11 @@ admin.use(methodOverride('_method'));
 admin.use('/static', express.static(__dirname + '/static'));    
 
 
-module.exports = function(options) {
-
-    var options = require('./Options')(options);
+module.exports = function(userDefined) {
+    var userDefined = userDefined || {};
+    debugger;
+    var options = require('./Options')(userDefined);
+    
     var Models;
     var collectionNames;
     var collections;
@@ -69,6 +71,7 @@ module.exports = function(options) {
 
     admin.get('/', routes.main);
     admin.post('/', routes.loginForm);
+    admin.post('/:collection/suggest', routes.suggest);
     admin.get('/:collection', routes.collection);
     admin.get('/:collection/:doc', routes.doc);
     admin.post('/:collection/:doc', routes.doc);
