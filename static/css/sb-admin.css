@@ -225,3 +225,22 @@ ul.alert-dropdown {
 .panel-yellow > a:hover {
     color: #df8a13;
 }
+
+.ref-host {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    padding: 1px;
+    overflow: hidden;
+    word-wrap: break-word;
+    cursor: text;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 1px 1px 1px 0 #d3d3d3 inset;
+    height: 100%;
+}
+
+.ref-host ul {
+    list-style: none;
+    margin: 0px 0px 0px 0px;
+}

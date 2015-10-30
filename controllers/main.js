@@ -69,7 +69,7 @@ module.exports = {
         var appPath = req.app.locals.appPath;
 
         Collection.findById(id, function(err, doc) {
-            doc = Doc(doc);
+            doc = Doc(doc, null, collections);
             switch (req.method) {
                 case "GET":
                     if (!doc) {
@@ -117,7 +117,6 @@ module.exports = {
                     });
             }
         });
-        // res.render('model');
     },
     suggest: function(req, res) {
         var term = req.body.term;
@@ -176,5 +175,9 @@ module.exports = {
                 break;
 
         };
+    },
+    redirect: function(req, res) {
+       var id = req.params.id;
+        
     }
 }

@@ -54,6 +54,9 @@ block content
                         include ./fields/checkbox
                       when 'ref'
                         include ./fields/ref
-                  button.btn.btn-success.pull-left(type='submit') Save
-                  //- form //- _method=DELETE
-                  button.btn.btn-danger(type='submit' name="_method" value='DELETE') Delete
+                  
+                  ul.list-inline
+                    li
+                      button.btn.btn-success(type='submit') Save
+                    li
+                      button.btn.btn-danger(type='submit' name="_method" value='DELETE') Delete

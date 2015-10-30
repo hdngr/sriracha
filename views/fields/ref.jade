@@ -1,10 +1,17 @@
+
 .form-group(class=typeof errors[field] === "undefined" ? "" : "has-error")
-    label #{field}
-        select.form-control
-            if doc[field] !== undefined
-                each ref in doc[field]
-                    option ref
-            else
-                option(disabled) Coming soon, the ability to associate documents!
+    .input-group
+        label.input-group-addon(for=field) #{field}
+        div.ref-host
+            ul
+                if doc[field] && doc[field].length
+                    each ref in doc[field]
+                        a.btn.btn-success(href=appPath + '/' + ref._collectionName + '/' + ref)
+                            | #{doc[field]}
+                else
+                    - var ref = doc[field]
+                    li
+                        a.btn.btn-success(href=appPath + '/' + ref._collectionName + '/' + ref)
+                            | #{doc[field]}
     if errors[field]
         span.help-block.text-danger= errors[field].message
