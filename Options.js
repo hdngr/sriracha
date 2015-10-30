@@ -7,7 +7,7 @@ module.exports = function(options) {
     var defaults = {
         username: 'admin',
         password: 'admin',
-        passport: false,
+        passport: undefined,
         adminUsersModel: 'User',
         hideFields: ['_id', '__v'],
         models: []

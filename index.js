@@ -1,14 +1,23 @@
 'use strict';
 
 var express = require('express'),
+    session = require('express-session'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     routes = require('./controllers/main'),
     _ = require('lodash'),
-    Collection = require('./models/Collection');
+    Collection = require('./models/Collection'),
+    Strategy = require('./strategy');
 
 var admin = express();
+
+// this session store is only used if parent app
+// DOES NOT already have a session store.
+admin.use(session({ 
+    secret: 'Siracha!',
+    saveUninitialized: true
+})); 
 
 admin.set('view engine', 'jade');
 admin.set('views', __dirname + '/views');
@@ -19,13 +28,14 @@ admin.use('/static', express.static(__dirname + '/static'));
 
 module.exports = function(userDefined) {
     var userDefined = userDefined || {};
-    debugger;
-    var options = require('./Options')(userDefined);
+
+    var options = require('./options')(userDefined);
     
     var Models;
     var collectionNames;
     var collections;
     var docs;
+    var strategy;
 
     // models default to all models in a Mongoose connection
     if(options.models.length > 0) {
@@ -61,16 +71,25 @@ module.exports = function(userDefined) {
     });
     
     admin.use(function (req, res, next) {
-        if(!req.session) {
-            req.session = {}
-        };
         req.session.message = req.session.message || { error: [], success: [], info: [] };
         admin.locals.message  = req.session.message;
         next();
     });
 
+    // need something more robust down the road...
+    if(process.env.NODE_ENV === 'test') {
+        admin.use(function (req, res, next) {
+            req.session.isLoggedIn = true;
+            next();
+        });
+    }
+
+    strategy = new Strategy(options);
+    
+    admin.use(strategy.middleware.bind(strategy));
+    admin.post('/', strategy.login.bind(strategy));
+
     admin.get('/', routes.main);
-    admin.post('/', routes.loginForm);
     admin.post('/:collection/suggest', routes.suggest);
     admin.get('/:collection', routes.collection);
     admin.get('/:collection/:doc', routes.doc);

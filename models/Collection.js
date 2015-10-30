@@ -13,7 +13,7 @@ module.exports = function(MongooseModel, options) {
     var statics = {
         pluralName: Collection.modelName + 's',
         adminFields: [],
-        searchField: options[Collection.modelName].searchField || 'id'
+        searchField: options[Collection.modelName].searchField || false
     };
     
     var paths = Collection.schema.paths;

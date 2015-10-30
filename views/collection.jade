@@ -1,50 +1,56 @@
 extends ./layout
 
 block content
-    .container-fluid
-      // Page Heading
-      .row
-        .col-md-10
-          h1.page-header
-            | #{Collection.pluralName}
-          ol.breadcrumb
-            li
-              i.fa.fa-dashboard
-              a(href=appPath) Admin
-            li.active
-              i.fa.fa-
-              |  #{Collection.pluralName}
-      // /.row
-      .row
-        .col-md-10
-          .form-group.input-group
-            input.typeahead.form-control(type='text', placeholder="Search by " + Collection.searchField)
-            span.input-group-btn
-              button.btn.btn-default(type='button')
-                i.fa.fa-search 
-      .row
-        .col-md-10
-          h2 #{Collection.pluralName}
-          .table-responsive
-            table.table.table-bordered.table-hover.table-striped
-              thead
-                tr
-                  th #
-                  each field in Collection.adminFields
-                    th= field
-                      a(href="?sortField=" + field + "&criteria=" + (criteria || ''))
-                        i.fa.fa-sort.pull-right
-              tbody
-                each doc, i in docs
+    #wrapper
+      include ./nav
+      #page-wrapper
+        include ./messages
+
+        .container-fluid
+          // Page Heading
+          .row
+            .col-md-10
+              h1.page-header
+                | #{Collection.pluralName}
+              ol.breadcrumb
+                li
+                  i.fa.fa-dashboard
+                  a(href=appPath) Admin
+                li.active
+                  i.fa.fa-
+                  |  #{Collection.pluralName}
+          // /.row
+          if Collection.searchField
+            .row
+              .col-md-10
+                .form-group.input-group
+                  input.typeahead.form-control(type='text', placeholder="Search by " + Collection.searchField)
+                  span.input-group-btn
+                    button.btn.btn-default(type='button')
+                      i.fa.fa-search 
+          .row
+            .col-md-10
+              h2 #{Collection.pluralName}
+              .table-responsive
+                table.table.table-bordered.table-hover.table-striped
+                  thead
                     tr
-                      td= 10 * page + (i + 1)
-                        each field in Collection.adminFields
-                            td 
-                                a(href="#{appPath}/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
-          if (pages > 1)
-            nav
-              ul.pagination
-                != paginate(pages, page)
+                      th #
+                      each field in Collection.adminFields
+                        th= field
+                          a(href="?sortField=" + field + "&criteria=" + (criteria || ''))
+                            i.fa.fa-sort.pull-right
+                  tbody
+                    each doc, i in docs
+                        tr
+                          td= 10 * page + (i + 1)
+                            each field in Collection.adminFields
+                                td 
+                                    a(href="#{appPath}/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
+              if (pages > 1)
+                nav
+                  ul.pagination
+                    != paginate(pages, page)
 
 block append scripts
   script(type='text/javascript').
