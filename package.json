@@ -2,6 +2,10 @@
   "name": "siracha",
   "version": "0.0.0",
   "description": "An admin middleware for mongoose and express.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hdngr/siracha.git"
+  },
   "main": "index.js",
   "scripts": {
     "start": "gulp simple",
@@ -26,7 +30,9 @@
     "gulp-livereload": "^3.8.0",
     "gulp-mocha": "^2.1.3",
     "gulp-nodemon": "^2.0.4",
+    "istanbul": "^0.4.0",
     "minimist": "^1.1.1",
+    "mocha": "^2.3.3",
     "mocha-lcov-reporter": "^1.0.0",
     "should": "^7.1.0",
     "supertest": "^1.1.0"
