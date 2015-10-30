@@ -24,7 +24,30 @@ module.exports = function(MongooseModel, options) {
         }
     }
 
-    _.extend(Collection, statics);
+    var methods = {
+        getFieldType: function(field) {
+            var path = Collection.schema.path(field);
+            if(!path.options.adminFieldType) {
+                switch (path.instance) {
+                    case 'String':
+                        return 'text';
+                        break;
+                    case 'Boolean':
+                        return 'checkbox';
+                        break;
+                    case 'ObjectID': // need better logic for multiple docs
+                        return 'ref'; // vs single documents
+                        break;
+                    default:
+                        return 'text';
+                        break;
+                }
+            };
+            return path.options.adminFieldType
+        }
+    };
+
+    _.extend(Collection, statics, methods);
 
     return Collection
 

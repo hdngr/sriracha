@@ -4,6 +4,10 @@ var _ = require('lodash'),
     Doc = require('../models/Document'),
     paginate = require('../utils/paginate');
 
+function handleMessage(session, type, message) {
+    session.message[type].push(message);
+}
+
 module.exports = {
     main: function(req, res, next) {
         var user = req.user || {};
@@ -27,14 +31,14 @@ module.exports = {
 
         var sortField = req.query.sortField;
         var criteria = req.query.criteria;
-        if(!criteria) {
-            res.locals.criteria = criteria =  1
+        if (!criteria) {
+            res.locals.criteria = criteria = 1
         } else {
             res.locals.criteria = criteria = -criteria
         }
 
         var sort;
-        if(sortField) {
+        if (sortField) {
             sort = {};
             sort[sortField] = criteria;
         }
@@ -45,7 +49,8 @@ module.exports = {
             .sort(sort) // default sorting parameter from options...
             .exec(function(err, docs) {
                 Collection.count().exec(function(err, count) {
-                    if (err) res.send(500);
+                    if(err) handleMessage(req.session, 'error', err.errors)
+                    // handleMessage('error', err.errors)
                     res.render('collection', {
                         docs: docs,
                         Collection: Collection,
@@ -67,10 +72,14 @@ module.exports = {
             doc = Doc(doc);
             switch (req.method) {
                 case "GET":
+                    if (!doc) {
+                        handleMessage(req.session, 'error', "It doesn't look like there is a document with that id.");
+                    };
                     res.render('doc', {
                         doc: doc,
                         Collection: Collection,
-                        errors: {}
+                        errors: {},
+                        id: id
                     });
                     break;
                 case "POST":
@@ -88,16 +97,15 @@ module.exports = {
                     doc.remove(function(err) {
                         if (err) {
                             err = err || {};
-                            var message = "Oops! Looks like there was an error!"
-                            req.session.message.error.push(message);
+                            handleMessage(req.session, 'error', "Oops! Looks like there was a problem deleting the document!");
                             return res.render('doc', {
                                 doc: doc,
                                 Collection: Collection,
                                 errors: err.errors || {}
                             });
-                        }
+                        };
                         var message = "Doc " + doc.id + " deleted successfully!";
-                        req.session.message.success.push(message);
+                        handleMessage(req.session, 'success', message);
                         res.redirect(appPath + '/' + doc.collection.name);
                     })
                     break;
@@ -123,16 +131,50 @@ module.exports = {
         var query = {};
         query[Collection.searchField] = new RegExp(term, 'i');
         Collection.find(query)
-        .select('email id')
-        .limit(10)
-        .exec(function(err, docs) {
-            var results = _.map(docs, function(doc) {
-                return {
-                    value: doc[Collection.searchField],
-                    id: doc.id
-                }
+            .select('email id')
+            .limit(10)
+            .exec(function(err, docs) {
+                var results = _.map(docs, function(doc) {
+                    return {
+                        value: doc[Collection.searchField],
+                        id: doc.id
+                    }
+                });
+                res.json(results);
             });
-            res.json(results);
-        });
+    },
+    newDoc: function(req, res) {
+        var collections = req.app.locals.collections;
+        var collection = req.app.locals.collectionNames[req.params.collection];
+        var id = req.params.doc;
+        var Collection = collections[collection];
+        var appPath = req.app.locals.appPath;
+        switch (req.method) {
+            case "POST":
+                var doc = new Collection(req.body);
+                doc.save(function(err) {
+                    if (err) {
+                        handleMessage(req.session, 'error', 'There was a problem saving the document!  Try again.');
+                        return res.render('doc', {
+                            doc: doc,
+                            Collection: Collection,
+                            errors: err.errors || {}
+                        });
+                    }
+                    handleMessage(req.session, 'success', Collection.modelName + " created successfully!");
+                    res.redirect(doc.id);
+                });
+                break;
+            default:
+                // e.g. GET and DELETE
+                res.render('doc', {
+                    doc: {},
+                    Collection: Collection,
+                    errors: {},
+                    id: id
+                });
+                break;
+
+        };
     }
-};
+}

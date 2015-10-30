@@ -22,7 +22,16 @@ admin.use(session({
 admin.set('view engine', 'jade');
 admin.set('views', __dirname + '/views');
 admin.use(bodyParser.urlencoded({ extended: false }));
-admin.use(methodOverride('_method'));
+// allow delete method
+admin.use(methodOverride(function(req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
+
 admin.use('/static', express.static(__dirname + '/static'));    
 
 
@@ -88,13 +97,12 @@ module.exports = function(userDefined) {
     
     admin.use(strategy.middleware.bind(strategy));
     admin.post('/', strategy.login.bind(strategy));
-
     admin.get('/', routes.main);
-    admin.post('/:collection/suggest', routes.suggest);
+    
     admin.get('/:collection', routes.collection);
-    admin.get('/:collection/:doc', routes.doc);
-    admin.post('/:collection/:doc', routes.doc);
-    admin.delete('/:collection/:doc', routes.doc);
+    admin.post('/:collection/suggest', routes.suggest);
+    admin.all('/:collection/new', routes.newDoc);
+    admin.all('/:collection/:doc', routes.doc);
     
     return admin;
 };

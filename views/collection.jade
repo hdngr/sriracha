@@ -23,11 +23,17 @@ block content
           if Collection.searchField
             .row
               .col-md-10
-                .form-group.input-group
-                  input.typeahead.form-control(type='text', placeholder="Search by " + Collection.searchField)
-                  span.input-group-btn
-                    button.btn.btn-default(type='button')
-                      i.fa.fa-search 
+                .form-group.input-group-lg.input-group
+                    input.typeahead.form-control(type='text', placeholder="Search by " + Collection.searchField)
+                    span.input-group-btn
+                      button.btn.btn-default(type='button')
+                        i.fa.fa-search 
+
+          .row
+            .col-md-10
+              a.btn.btn-success.btn-lg(href=Collection.collection.name + "/new") New #{Collection.modelName}
+
+
           .row
             .col-md-10
               h2 #{Collection.pluralName}
@@ -55,21 +61,6 @@ block content
 block append scripts
   script(type='text/javascript').
 
-      //- var docs = new Bloodhound({
-      //-   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-      //-   queryTokenizer: Bloodhound.tokenizers.whitespace,
-      //-   remote: {
-      //-     url: 'suggest?q=%Q',
-      //-     query: '%Q',
-      //-     ajax: {
-      //-       type: 'GET',
-      //-       dataType: 'jsonp'
-      //-       }
-      //-   }
-      //- });
-      
-      //- docs.initialize();
-      
       $('.typeahead').typeahead({
         displayText: function(item) {
           return item.value;
@@ -80,7 +71,7 @@ block append scripts
         source: function(term, process) {
         return $.ajax({
             dataType: "json",
-            url: window.location.href + '/suggest',
+            url: window.location.href.split('?')[0] + '/suggest',
             data: {term: term},
             type: 'POST',
             success: function (json) {
