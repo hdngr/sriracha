@@ -49,7 +49,7 @@ block content
   #page-wrapper
     include ./messages
     .container
-          form.form-signin(action=appPath + '?redirect=' + redirect, method="POST")
+          form.form-signin(action=appPath + '/login?redirect=' + redirect, method="POST")
             h2.form-signin-heading Please sign in
             label.sr-only(for='inputEmail') Email address
             input.form-control(name="username" type='text', placeholder='username', required='', autofocus='')

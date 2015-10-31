@@ -9,12 +9,16 @@ class Strategy {
 
     middleware(req, res, next) {
         if (!this.passport) {
-            if(req.session.isLoggedIn || (req.method === 'POST' && req.path === '/')) {
+            if(req.session.isLoggedIn) {
                 return next();
-            }
+            };
+            if(req.method === 'POST' && req.path === ('/login' || '/logout')) {
+                return next()
+            };
             res.locals.redirect = req.app.locals.appPath + req.path;
             return res.render('login');
         } else {
+            // will have to populate "user" variable for template
             return this.passport;
         }
     }
@@ -30,11 +34,23 @@ class Strategy {
                 // loops back through middleware
                 return res.redirect(redirect)
             } else {
+                req.session.user = {
+                    name: 'admin'
+                };
+                req.app.locals.user = req.session.user;
                 req.session.isLoggedIn = true;
                 return res.redirect(redirect);
             }
         }
         res.send(500);
+    }
+
+    logout(req, res) {
+        delete req.session.user;
+        delete req.session.isLoggedIn;
+        var message = "You've been successfully logged out!"
+        req.session.message.success.push(message);
+        res.redirect('/');
     }
 };
 

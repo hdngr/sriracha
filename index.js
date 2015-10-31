@@ -96,8 +96,11 @@ module.exports = function(userDefined) {
     strategy = new Strategy(options);
     
     admin.use(strategy.middleware.bind(strategy));
-    admin.post('/', strategy.login.bind(strategy));
+
     admin.get('/', routes.main);
+
+    admin.post('/login', strategy.login.bind(strategy));
+    admin.post('/logout', strategy.logout);
     
     admin.get('/:collection', routes.collection);
     admin.post('/:collection/suggest', routes.suggest);
