@@ -1,0 +1,18 @@
+
+.form-group(class=typeof errors[path] === "undefined" ? "" : "has-error")
+    .input-group
+        label.input-group-addon(for=path) #{path}
+        div.ref-host
+            ul
+                - var value = doc.get(path);
+                if value && value.length
+                    each ref in value
+                        a.btn.btn-success(href=appPath + '/' + ref._collectionName + '/' + ref)
+                            | #{ref}
+                else
+                    - var ref = value
+                    li
+                        a.btn.btn-success(href=appPath + '/' + ref._collectionName + '/' + ref)
+                            | #{ref}
+    if errors[path]
+        span.help-block.text-danger= errors[path].message

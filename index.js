@@ -5,10 +5,11 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    routes = require('./controllers/main'),
+    routes = require('./lib/controllers/main'),
     _ = require('lodash'),
-    Collection = require('./models/Collection'),
-    Strategy = require('./strategy');
+    Collection = require('./lib/models/Collection'),
+    Strategy = require('./lib/strategy'),
+    Options = require('./lib/options');
 
 var admin = express();
 
@@ -20,7 +21,7 @@ admin.use(session({
 })); 
 
 admin.set('view engine', 'jade');
-admin.set('views', __dirname + '/views');
+admin.set('views', __dirname + '/lib/views');
 admin.use(bodyParser.urlencoded({ extended: false }));
 // allow delete method
 admin.use(methodOverride(function(req, res) {
@@ -32,13 +33,13 @@ admin.use(methodOverride(function(req, res) {
   }
 }));
 
-admin.use('/static', express.static(__dirname + '/static'));    
+admin.use('/static', express.static(__dirname + '/lib/static'));    
 
 
 module.exports = function(userDefined) {
     var userDefined = userDefined || {};
 
-    var options = require('./options')(userDefined);
+    var options = Options(userDefined);
     
     var Models;
     var collectionNames;
@@ -85,14 +86,6 @@ module.exports = function(userDefined) {
         next();
     });
 
-    // need something more robust down the road...
-    if(process.env.NODE_ENV === 'test') {
-        admin.use(function (req, res, next) {
-            req.session.isLoggedIn = true;
-            next();
-        });
-    }
-
     strategy = new Strategy(options);
     
     admin.use(strategy.middleware.bind(strategy));
@@ -101,7 +94,7 @@ module.exports = function(userDefined) {
 
     admin.post('/login', strategy.login.bind(strategy));
     admin.post('/logout', strategy.logout);
-    
+
     admin.get('/:collection', routes.collection);
     admin.post('/:collection/suggest', routes.suggest);
     admin.all('/:collection/new', routes.newDoc);

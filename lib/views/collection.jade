@@ -42,7 +42,7 @@ block content
                   thead
                     tr
                       th #
-                      each field in Collection.adminFields
+                      each field in Collection.adminPaths
                         th= field
                           a(href="?sortField=" + field + "&criteria=" + (criteria || ''))
                             i.fa.fa-sort.pull-right
@@ -50,7 +50,7 @@ block content
                     each doc, i in docs
                         tr
                           td= 10 * page + (i + 1)
-                            each field in Collection.adminFields
+                            each field in Collection.adminPaths
                                 td 
                                     a(href="#{appPath}/#{Collection.collection.name}/#{doc.id}") #{doc[field]}
               if (pages > 1)

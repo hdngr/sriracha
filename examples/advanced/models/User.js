@@ -17,7 +17,17 @@ var UserSchema = new Schema({
     type: String,
     default: '',
     unique: true
-  }
+  },
+  onboarding: {
+    signupDate: {
+      type: Date
+    },
+    hasLoggedIn: {
+      type: Boolean,
+      default: false
+    }
+  },
+  roles: []
 });
 
 UserSchema.path('email').validate(function(email) {

@@ -1,7 +1,0 @@
-.checkbox(class=typeof errors[field] === "undefined" ? "" : "has-error")
-    label
-        input(name=field type="hidden" value="false")
-        input(name=field, type='checkbox', autofocus='', value=doc[field] checked=doc[field])
-        | #{field}
-    if errors[field]
-        span.help-block.text-danger= errors[field].message

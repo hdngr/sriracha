@@ -4,8 +4,8 @@
 // var User = require('../../examples/simple/models/User');
 // var users = mock.createUsers();
 // var user = users[0];
-var Collection = require('../../models/Collection');
-var options = require('../../options')();
+var Collection = require('../../lib/models/Collection');
+var options = require('../../lib/options')();
 var should = require('should');
 
 describe('siracha model tests', function() {

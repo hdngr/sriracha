@@ -46,15 +46,8 @@ block content
             .row
               .col-xs-8.col-xs-offset-2
                 form(action="", method="post")
-                  each field in Collection.adminFields
-                    case Collection.getFieldType(field)
-                      when 'text'
-                        include ./fields/text
-                      when 'checkbox'
-                        include ./fields/checkbox
-                      when 'ref'
-                        include ./fields/ref
-                  
+                  each path in Collection.adminPaths
+                    include ./fields/fields
                   ul.list-inline
                     li
                       button.btn.btn-success(type='submit') Save
