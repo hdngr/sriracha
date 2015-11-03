@@ -1,4 +1,3 @@
-# WARNING: This has not been released.  Come back soon!
 [![Build Status](https://travis-ci.org/hdngr/siracha.svg?branch=master)](https://travis-ci.org/hdngr/siracha)
 # Siracha
 An admin Express app for Mongoose models.
@@ -8,12 +7,12 @@ Siracha is an Express app that can be mounted to any url in your app.  The admin
 ## Quick Start
 ...
 ## Options
-Options can be set globally through the options object passed to admin, or on individual Mongoose Schemas.  The cleanest way to define options related to an individual model is directly on the Schema itself.  However setting options via the options object, is offered as a convenience method.
+Options can be set globally through the options object passed to siracha, or on individual Mongoose Schemas.  The cleanest way to define options related to an individual model is directly on the Schema itself.  However setting options via the options object, is offered as a convenience method.
 
 ### Setting Options Globally:
 
 ```
-app.use('/admin', admin(models, {...}));
+app.use('/admin', admin({...}));
 ``` 
 
 #### Options:
@@ -62,7 +61,7 @@ var SomeSchema = new Schema({
 ...
 
 ## Contributing
-Contributing is anything from filing bugs, to requesting new features and identifying what layer to expose to other users for customization, to building features and their tests.  Here's how to use this repo:
+Contributing is anything from filing bugs, to requesting new features, to building features and their tests.  Here's how to use this repo:
 
 ```
 # fork this repo
@@ -89,3 +88,10 @@ node-inspector
 # tests pass
 # submit a pull request!
 ```
+Read more about tests in [[tests/tests.md]].
+
+
+## Acknowledgments
+Thanks [Iron Summit Media Strategies](http://www.ironsummitmedia.com/) for the awesome [Start Bootstrap Themes](http://startbootstrap.com/).
+
+Siracha started with [SB Admin](http://startbootstrap.com/template-overviews/sb-admin/) and I used [Jade Converter](http://html2jade.org/) to turn it into Jade.
