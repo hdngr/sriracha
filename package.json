@@ -10,7 +10,7 @@
   "scripts": {
     "start": "gulp simple",
     "test": "gulp test",
-    "test-ci": "istanbul cover _mocha -- tests/ -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test-ci": "istanbul cover -x 'examples' _mocha -- tests/ -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "author": "",
   "license": "ISC",
