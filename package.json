@@ -1,10 +1,10 @@
 {
-  "name": "siracha",
+  "name": "sriracha",
   "version": "0.0.0",
   "description": "An admin middleware for mongoose and express.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hdngr/siracha.git"
+    "url": "git://github.com/hdngr/sriracha.git"
   },
   "main": "index.js",
   "scripts": {
