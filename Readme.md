@@ -1,15 +1,13 @@
-[![Build Status](https://travis-ci.org/hdngr/sriracha.svg?branch=master)](https://travis-ci.org/hdngr/sriracha)
-
-[![Coverage Status](https://coveralls.io/repos/hdngr/sriracha/badge.svg?branch=master&service=github)](https://coveralls.io/github/hdngr/sriracha?branch=master)
-
-[![Dependency Status](https://david-dm.org/hdngr/sriracha.svg)](https://david-dm.org/hdngr/sriracha)
-
-[![devDependency Status](https://david-dm.org/hdngr/sriracha/dev-status.svg)](https://david-dm.org/hdngr/sriracha#info=devDependencies)
-
 # Sriracha
 A super spicy admin backend for Express and Mongoose.
 
 ![Image of Sriracha](_img/sriracha.jpg)
+
+  [![Build Status](https://travis-ci.org/hdngr/sriracha.svg?branch=master)](https://travis-ci.org/hdngr/sriracha)
+  [![Coverage Status](https://coveralls.io/repos/hdngr/sriracha/badge.svg?branch=master&service=github)](https://coveralls.io/github/hdngr/sriracha?branch=master)
+  [![Dependency Status](https://david-dm.org/hdngr/sriracha.svg)](https://david-dm.org/hdngr/sriracha)
+  [![devDependency Status](https://david-dm.org/hdngr/sriracha/dev-status.svg)](https://david-dm.org/hdngr/sriracha#info=devDependencies)
+  [![npm version](https://badge.fury.io/js/sriracha-admin.svg)](https://badge.fury.io/js/sriracha-admin)
 
 Sriracha is an Express app that can be mounted as middleware to any url in your application.  The admin site's routes and editing interface are generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the admin site.
 
