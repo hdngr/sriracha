@@ -8,6 +8,7 @@ var PostSchema = new Schema({
   title: {
     type: String,
     default: ''
+    // adminSearchField: true
   },
   date: {
     type: Date,
@@ -21,6 +22,9 @@ var PostSchema = new Schema({
   published: {
     type: Boolean,
     default: false
+  },
+  campaignHash: {
+    type: String
   }
 });
 

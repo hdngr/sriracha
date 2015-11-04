@@ -14,8 +14,17 @@ mongoose.connect(dbURL);
 
 var app = express();
 
-app.use('/crazy-mount-path', admin({User: {
-  searchField: 'email'}
+app.use('/crazy-mount-path', admin({
+    User: {
+        searchField: 'email',
+    },
+    hideFields: ['__v'],
+    Post: {
+        searchField: 'title',
+        campaignHash: {
+            admin: false
+        }
+    }
 }));
 
 app.get('/', function(req, res) {
@@ -27,15 +36,15 @@ var server = app.listen(3000, function() {
     console.log('Advanced example app listening at port %s', 3000);
 })
 
-server.on('close', function(done) { 
+server.on('close', function(done) {
     console.log('Closing advanced example app port %s', 3000);
 });
 
 process.on('SIGINT', function() {
-  mock.destroy(function() {
-    server.close();
-    process.kill(0);
-  });
+    mock.destroy(function() {
+        server.close();
+        process.kill(0);
+    });
 });
 
 module.exports = server;

@@ -19,7 +19,7 @@ module.exports = {
                 }).save(function(err, doc) {
                     if (!doc) return doc;
                     var post = new Post({
-                        title: "A Blog Post!",
+                        title: doc.firstName + " wrote a Post on " + new Date(),
                         author: doc._id
                         }).save();
                 });

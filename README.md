@@ -1,64 +1,117 @@
-[![Build Status](https://travis-ci.org/hdngr/siracha.svg?branch=master)](https://travis-ci.org/hdngr/siracha)
+[![Build Status](https://travis-ci.org/hdngr/sriracha.svg?branch=master)](https://travis-ci.org/hdngr/sriracha)
 # Siracha
-An admin Express app for Mongoose models.
+A super spicy Express middleware for Mongoose admin.
 
-Siracha is an Express app that can be mounted to any url in your app.  The admin site's routes and editing interface is generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the site.
+![Image of Sriracha](_img/sriracha.jpg)
+
+Sriracha is an Express app that can be mounted to any url in your app.  The admin site's routes and editing interface are generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the admin site.
 
 ## Quick Start
+Install Sriracha:
+```
+npm install --save sriracha
+```
+
+Include Sriracha in your express app and mount it to a url.
+
+```
+var express = require('express');
+var admin = require('sriracha');
+
+app = express()
 ...
-## Options
-Options can be set globally through the options object passed to siracha, or on individual Mongoose Schemas.  The cleanest way to define options related to an individual model is directly on the Schema itself.  However setting options via the options object, is offered as a convenience method.
+app.use('/admin', admin());
+```
 
-### Setting Options Globally:
+login with username `admin` and password `admin`.
+
+Sriracha is running at `yourapp/admin`!
+
+![Image of Sriracha Landing Page](_img/landing.png)
+
+## Setting Options Globally
+Options can be set globally through the options object passed to sriracha.  Defaults can be found in [`./lib/options.js`](./lib/options.js)
+  
+  ```
+  app.use('/admin', admin({...}))
+  ```
+
+**username**<br> 
+*default*: `'admin'` User name used to access admin backend. 
+
+**password**<br>
+*default*: `'admin'` Password used to access the admin backend.
+
+**hideFields**:<br>
+*default*: `['_id', '_v']` Fields that are hidden in all documents and collections.
+
+**\<collection\>.searchField**
+*default*: `undefined` Sriracha implements a simple (for now) autocomplete query against the specified field.
+
+For instance, to search against the *email* field in the *User* model, you would supply the following option:
 
 ```
-app.use('/admin', admin({...}));
-``` 
-
-#### Options:
-
-**username** *default - 'admin'*    
-User name used to access admin backend. 
-
-#### Setting Options on a Schema:
-
+var options = {
+...,
+User: {
+  searchField: 'email'
+}
+...
+}
 ```
-var SomeSchema = new Schema({
-  firstName: {
-    type: String,
-    default: ''
-  },
-  email: {
-    type: String,
-    default: '',
-    unique: true
-  },
-  comments: {
-    type: String,
-    adminFieldType: 'textarea'
-  },
-  hashed_password: {
-    type: String,
-    default: '',
-    admin: false
-  },
+
+**\<collection\>.admin**
+*default*: `undefined` A setting of false will hide this field from the admin.
+
+
+## Setting Options on a Schema
+All `<collection>` level options can be set on an individual schema. They will take precedence over the same options if they are also defined globally.  
+
+To set schema level options, provide the option, prefixed with `admin`.
+
+For example, the following schema would set the `lastName` to the search field for users, and would hide the `email` and `onboarding.signupDate` fields.
+    
+  ```
   ...
-});
-```
+  var Schema = mongoose.Schema;
 
-```
-    var defaults = {
-        
-        username: 'admin', // default login username
-        password: 'admin', // default login password
-        passport: false,   // passport not used 
-        hideFields: ['_id', '__v']
-    };
-
-```
+  var UserSchema = new Schema({
+    lastName: {
+      type: String,
+      default: '',
+      adminSearchField: true
+    },
+    ...,
+    email: {
+      type: String,
+      admin: false
+    }
+    onboarding: {
+      signupDate: {
+        type: Date,
+        admin: false
+      },
+      hasLoggedIn: {
+        type: Boolean,
+        default: false
+      }
+    },
+  });
+  ...
+  ```
 
 ## Examples
-...
+Examples can be found in the `./examples` directory.  To run them:
+
+```
+git clone <this-repo-or-your-fork>
+cd <this-repo-or-your-fork>
+npm install
+# run the app with simple setup
+gulp simple
+# run the app with advanced setup
+gulp advanced
+```
 
 ## Contributing
 Contributing is anything from filing bugs, to requesting new features, to building features and their tests.  Here's how to use this repo:
@@ -88,7 +141,7 @@ node-inspector
 # tests pass
 # submit a pull request!
 ```
-Read more about tests in [[tests/tests.md]].
+Read more about tests in [tests/tests.md](./tests/tests.md).
 
 
 ## Acknowledgments
