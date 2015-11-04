@@ -1,11 +1,10 @@
 'use strict';
 
 // import the moongoose helper utilities
-var assert = require('assert');
 var request = require('supertest');
 var should = require('should');
 
-describe('e2e tests using simple example', function() {
+describe('using simple example', function() {
   var agent;
   var server;
 

@@ -1,33 +1,22 @@
 'use strict';
 
 // import the moongoose helper utilities
-var assert = require('assert'),
-  request = require('supertest'),
-  should = require('should'),
-  cheerio = require('cheerio');
+var should = require('should'),
+  cheerio = require('cheerio'),
+  advanced = require('./utils').advanced;
 
-describe('e2e tests using advanced example', function() {
-  var agent;
-  var server;
+describe('using advanced example', function() {
+  var agent, server;
 
   before(function(done) {
-    var mongoose = require('mongoose');
-    mongoose.connection.models = {};
-    mongoose.models = {};
-    if (mongoose.connection.readyState === 1) {
-      mongoose.disconnect();
-    };
-    console.log('starting advanced server');
-    server = require('../examples/advanced/server');
-    agent = request.agent(server);
-    return done();
+    var result = advanced.start();
+    agent = result[0];
+    server = result[1];
+    done();
   });
 
   after(function(done) {
-    var mock = require('../examples/advanced/mock');
-    console.log('closing advanced server');
-    server.close();
-    mock.destroy(done);
+    advanced.stop(server, done);
   });
 
   describe('/crazy-mount-path/login', function() {
@@ -44,7 +33,7 @@ describe('e2e tests using advanced example', function() {
     });
   });
 
-  describe('crazy-mount-path is the mountpath', function(done) {
+  describe('crazy-mount-path is the mountpath', function() {
     it('/crazy-mount-path should respond with the index page a status code of 200', function(done) {
       agent.get('/crazy-mount-path')
         .expect(200)

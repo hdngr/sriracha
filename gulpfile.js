@@ -52,8 +52,8 @@ gulp.task('test', function() {
         })
         // gulp-mocha needs filepaths so you can't have any plugins before it
         .pipe(mocha({
-            reporter: 'nyan'
-                // bail: true
+            reporter: 'spec',
+                bail: true
         }))
         .once('end', function() {
             process.exit();
