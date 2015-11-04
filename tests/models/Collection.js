@@ -46,6 +46,11 @@ describe('Collection', function() {
         it('should return "ref" for an ObjectId schema type', function() {
             PostCol.getPathType('author').should.equal('ref');
         });
+
+        it('should return "adminFieldType" from mongoose schema if it\'s defined', function() {
+            PostCol.getPathType('date').should.equal('foo');
+        });
+
     });
 
 })

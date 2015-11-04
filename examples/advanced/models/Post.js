@@ -13,7 +13,8 @@ var PostSchema = new Schema({
   date: {
     type: Date,
     default: new Date(),
-    admin: false
+    admin: false,
+    adminFieldType: 'foo'
   },
   author: {
     type: Schema.Types.ObjectId,
