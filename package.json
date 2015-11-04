@@ -1,12 +1,18 @@
 {
-  "name": "sriracha",
-  "version": "0.0.0",
+  "name": "sriracha-admin",
+  "version": "0.0.1",
   "description": "An admin middleware for mongoose and express.",
   "repository": {
     "type": "git",
     "url": "git://github.com/hdngr/sriracha.git"
   },
   "main": "index.js",
+  "files": [
+    "LICENSE",
+    "Readme.md",
+    "index.js",
+    "lib/"
+  ],
   "scripts": {
     "start": "gulp simple",
     "test": "gulp test",

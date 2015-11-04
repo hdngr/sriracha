@@ -1,37 +1,44 @@
 [![Build Status](https://travis-ci.org/hdngr/sriracha.svg?branch=master)](https://travis-ci.org/hdngr/sriracha)
+
 [![Coverage Status](https://coveralls.io/repos/hdngr/sriracha/badge.svg?branch=master&service=github)](https://coveralls.io/github/hdngr/sriracha?branch=master)
-# Siracha
-A super spicy Express middleware for Mongoose admin.
+
+[![Dependency Status](https://david-dm.org/hdngr/sriracha.svg)](https://david-dm.org/hdngr/sriracha)
+
+[![devDependency Status](https://david-dm.org/hdngr/sriracha/dev-status.svg)](https://david-dm.org/hdngr/sriracha#info=devDependencies)
+
+# Sriracha
+A super spicy admin backend for Express and Mongoose.
 
 ![Image of Sriracha](_img/sriracha.jpg)
 
-Sriracha is an Express app that can be mounted to any url in your app.  The admin site's routes and editing interface are generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the admin site.
+Sriracha is an Express app that can be mounted as middleware to any url in your application.  The admin site's routes and editing interface are generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the admin site.
 
 ## Quick Start
-Install Sriracha:
-```
-npm install --save sriracha
-```
+1. Install Sriracha:
 
-Include Sriracha in your express app and mount it to a url.
+  ```
+  npm install --save sriracha-admin
+  ```
 
-```
-var express = require('express');
-var admin = require('sriracha');
+2. Include Sriracha in your express app and mount it to a url.
 
-app = express()
-...
-app.use('/admin', admin());
-```
+  ```
+  var express = require('express');
+  var admin = require('sriracha-admin');
 
-login with username `admin` and password `admin`.
+  app = express();
+  ...
+  app.use('/admin', admin());
+  ```
 
-Sriracha is running at `yourapp/admin`!
+3. Login with username `admin` and password `admin`.
+
+  Sriracha is running at `yourapp/admin`!
 
 ![Image of Sriracha Landing Page](_img/landing.png)
 
 ## Setting Options Globally
-Options can be set globally through the options object passed to sriracha.  Defaults can be found in [`./lib/options.js`](./lib/options.js)
+Options can be set globally through the options object passed to the middleware.
   
   ```
   app.use('/admin', admin({...}))
@@ -46,7 +53,7 @@ Options can be set globally through the options object passed to sriracha.  Defa
 **hideFields**:<br>
 *default*: `['_id', '_v']` Fields that are hidden in all documents and collections.
 
-**\<collection\>.searchField**
+**\<collection\>.searchField**:<br>
 *default*: `undefined` Sriracha implements a simple (for now) autocomplete query against the specified field.
 
 For instance, to search against the *email* field in the *User* model, you would supply the following option:
@@ -61,12 +68,12 @@ User: {
 }
 ```
 
-**\<collection\>.admin**
+**\<collection\>.admin**<br>
 *default*: `undefined` A setting of false will hide this field from the admin.
 
 
 ## Setting Options on a Schema
-All `<collection>` level options can be set on an individual schema. They will take precedence over the same options if they are also defined globally.  
+All `<collection>` level options can be set on an individual schema as well. They will take precedence over the same options if they are also defined globally.  
 
 To set schema level options, provide the option, prefixed with `admin`.
 
@@ -115,35 +122,7 @@ gulp advanced
 ```
 
 ## Contributing
-Contributing is anything from filing bugs, to requesting new features, to building features and their tests.  Here's how to use this repo:
-
-```
-# fork this repo
-git clone <your-awesome-fork>
-cd <your-awesome-fork>
-git checkout -b <your-awesome-feature>
-git branch -d master
-
-# You can serve the "simple" app in development by running
-# gulp simple
-# in all likelihood, you should add your feature and associated options
-# to the advanced app
-# serve the "advanced" app in development
-gulp advanced 
-# add your awesome feature
-# write some tests
-# run those tests
-gulp test
-# debug those tests
-mocha --debug-brk tests
-# in another tab
-node-inspector
-
-# tests pass
-# submit a pull request!
-```
-Read more about tests in [tests/tests.md](./tests/tests.md).
-
+Contributing is anything from filing bugs, to requesting new features, to building features and their tests.  Read the [Contributing](./Contributing.md) doc to find out more.
 
 ## Acknowledgments
 Thanks [Iron Summit Media Strategies](http://www.ironsummitmedia.com/) for the awesome [Start Bootstrap Themes](http://startbootstrap.com/).
