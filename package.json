@@ -22,12 +22,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.1",
-    "express": "^4.13.3",
+    "express": ">=4.0",
     "express-session": "^1.12.1",
     "jade": "^1.11.0",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",
-    "mongoose": "^4.1.12"
+    "mongoose": ">=4"
   },
   "devDependencies": {
     "async": "^1.4.2",
