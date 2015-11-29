@@ -33,7 +33,8 @@ admin.use(methodOverride(function(req, res) {
   }
 }));
 
-admin.use('/static', express.static(__dirname + '/lib/static'));    
+admin.use('/static', express.static(__dirname + '/lib/static'));
+admin.use('/components', express.static(__dirname + '/components'));    
 
 
 module.exports = function(userDefined) {

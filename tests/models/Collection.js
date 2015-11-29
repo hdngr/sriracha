@@ -43,12 +43,28 @@ describe('Collection', function() {
             UserCol.getPathType('onboarding.hasLoggedIn').should.equal('checkbox');
         });
 
-        it('should return "ref" for an ObjectId schema type', function() {
+        it('should return "ref" for an ObjectId schema type that references another collection', function() {
             PostCol.getPathType('author').should.equal('ref');
         });
 
+        it('should return "ref" for an ObjectId schema type that does not reference another collection', function() {
+            PostCol.getPathType('_id').should.equal('text');
+        });
+
+        it('should return "date" field type from mongoose schema if it\'s defined', function() {
+            PostCol.getPathType('createdOn').should.equal('date');
+        });
+
         it('should return "adminFieldType" from mongoose schema if it\'s defined', function() {
-            PostCol.getPathType('date').should.equal('foo');
+            PostCol.getPathType('body').should.equal('textarea');
+        });
+        
+        it('should return "array" field type by default from an Array schema type', function() {
+            UserCol.getPathType('roles').should.equal('array');
+        });
+
+        it('should return "date" field type if the adminFieldType is set to "date"', function() {
+            UserCol.getPathType('onboarding.signupDate').should.equal('date');
         });
 
     });

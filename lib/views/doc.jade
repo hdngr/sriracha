@@ -53,3 +53,17 @@ block content
                       button.btn.btn-success(type='submit') Save
                     li
                       button.btn.btn-danger(type='submit' name="_method" value='DELETE') Delete
+// textarea
+block append scripts
+  script(type='text/javascript').
+          // bootstrap textareas
+          tinymce.init({
+              selector: "textarea"
+              });
+
+//date
+block append scripts
+  script(type='text/javascript').
+    $(function () {
+                $('.datetimepicker').datetimepicker();
+            });
