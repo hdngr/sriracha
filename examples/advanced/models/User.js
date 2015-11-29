@@ -20,7 +20,8 @@ var UserSchema = new Schema({
   },
   onboarding: {
     signupDate: {
-      type: Date
+      type: String,
+      adminFieldType: 'date'
     },
     hasLoggedIn: {
       type: Boolean,

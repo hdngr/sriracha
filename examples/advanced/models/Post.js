@@ -10,11 +10,11 @@ var PostSchema = new Schema({
     default: ''
     // adminSearchField: true
   },
-  date: {
+  createdOn: {
     type: Date,
     default: new Date(),
     admin: false,
-    adminFieldType: 'foo'
+    adminFieldType: 'date'
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -26,6 +26,14 @@ var PostSchema = new Schema({
   },
   campaignHash: {
     type: String
+  },
+  body: {
+    type: String,
+    adminFieldType: 'textarea'
+  },
+  tags: {
+    adminFieldType: 'array',
+    type: Array
   }
 });
 
