@@ -1,0 +1,25 @@
+{
+  "name": "sriracha-admin",
+  "description": "An admin middleware for mongoose and express.",
+  "main": "index.js",
+  "authors": [
+    "hdngr <hstnhdngr@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/hdngr/siracha",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "tinymce": "~4.3.0",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37"
+  }
+}
