@@ -39,7 +39,8 @@ Sriracha is an Express app that can be mounted as middleware to any url in your 
 Options can be set globally through the options object passed to the middleware.
   
   ```
-  app.use('/admin', admin({...}))
+  var options = {...};
+  app.use('/admin', admin(options));
   ```
 
 **username**<br> 
@@ -69,6 +70,44 @@ User: {
 **\<collection\>.admin**<br>
 *default*: `undefined` A setting of false will hide this field from the admin.
 
+## Field Types
+Field types are set automatically by Sriracha based on the Mongo schema type.  However, they can also be customized.  Using the 'adminFieldType' option.  See the [setting options on a schema](#setting-options-on-a-schema) for examples of how to set custom field types. 
+
+ Sriracha currently supports the following field types:
+
+ **text**<br>
+*default*: String and ObjectId schema types. 
+A simple string input field.
+
+![text field](_img/fields/text.png)
+
+**textarea**<br>
+*default*: none 
+The text area field allows easy inline editing of larger portions of text.  The textarea field uses [TinyMCE](https://www.tinymce.com/) and stores it's results as HTML.
+
+![textarea field](_img/fields/textarea.png)
+
+**date**<br>
+*default*: Date schema type. 
+A date picker field using the [datepicker jquery plugin](https://eonasdan.github.io/bootstrap-datetimepicker).
+
+![date field](_img/fields/date.png)
+
+**array**<br>
+*default*: Array schema type. 
+An input that accepts a comma separated list of values.
+
+![date field](_img/fields/array.png)
+
+**checkbox**<br>
+*default*: Boolean schema type. 
+A checkbox that setts a boolean field to `true` or `false.`
+
+**ref**<br>
+*default*: Reference to other documents. 
+An input of tags representing references to other documents.
+
+![date field](_img/fields/ref.png)
 
 ## Setting Options on a Schema
 All `<collection>` level options can be set on an individual schema as well. They will take precedence over the same options if they are also defined globally.  
@@ -105,6 +144,7 @@ For example, the following schema would set the `lastName` to the search field f
   });
   ...
   ```
+
 
 ## Examples
 Examples can be found in the `./examples` directory.  To run them:
