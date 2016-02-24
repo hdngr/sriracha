@@ -11,17 +11,21 @@
     "LICENSE",
     "Readme.md",
     "index.js",
-    "lib/"
+    "lib/",
+    "bower.json",
+    ".bowerrc"
   ],
   "scripts": {
     "start": "gulp simple",
     "test": "gulp test",
-    "test-ci": "istanbul cover -x 'examples' _mocha -- tests/ -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test-ci": "istanbul cover -x 'examples' _mocha -- tests/ -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "postinstall": "bower install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.14.1",
+    "bower": "^1.7.7",
     "express": ">=4.0",
     "express-session": "^1.12.1",
     "jade": "^1.11.0",
