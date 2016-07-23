@@ -1,7 +1,7 @@
 {
-  "name": "sriracha-admin",
-  "version": "0.0.3",
-  "description": "An admin middleware for mongoose and express.",
+  "name": "sriracha",
+  "version": "1.0.0",
+  "description": "A spicy admin middleware for mongoose and express.",
   "repository": {
     "type": "git",
     "url": "git://github.com/hdngr/sriracha.git"
