@@ -26,7 +26,7 @@ var server = app.listen(3000, function() {
     console.log('Simple example app listening at port %s', 3000);
 })
 
-server.on('close', function(done) { 
+server.on('close', function(done) {
     console.log('Closing simple example app port %s', 3000);
 });
 

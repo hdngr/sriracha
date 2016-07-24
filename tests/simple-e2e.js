@@ -15,13 +15,23 @@ describe('using simple example', function() {
     mongoose.models = {};
     // if mongoose connection is still alive disconnect it
     if (mongoose.connection.readyState === 1) {
-      mongoose.disconnect();
+      try {
+        mongoose.disconnect();
+      } catch(e) {
+        console.log(e);
+      }
+      startServer();
+    } else {
+      startServer();
     };
-    // start the server
-    console.log('starting simple server');
-    server = require('../examples/simple/server');
-    agent = request.agent(server);
-    done();
+
+    function startServer() {
+      // start the server
+      console.log('starting simple server');
+      server = require('../examples/simple/server');
+      agent = request.agent(server);
+      done();
+    }
   });
 
   after(function(done) {

@@ -10,7 +10,11 @@ var express = require('express'),
 
 var dbURL = 'mongodb://localhost/siracha-advanced-example';
 
-mongoose.connect(dbURL);
+try {
+  mongoose.connect(dbURL);
+} catch(e) {
+  console.log(e);
+}
 
 var app = express();
 
