@@ -7,7 +7,7 @@ A super spicy admin backend for Express and Mongoose.
   [![Coverage Status](https://coveralls.io/repos/hdngr/sriracha/badge.svg?branch=master&service=github)](https://coveralls.io/github/hdngr/sriracha?branch=master)
   [![Dependency Status](https://david-dm.org/hdngr/sriracha.svg)](https://david-dm.org/hdngr/sriracha)
   [![devDependency Status](https://david-dm.org/hdngr/sriracha/dev-status.svg)](https://david-dm.org/hdngr/sriracha#info=devDependencies)
-  [![npm version](https://badge.fury.io/js/sriracha-admin.svg)](https://badge.fury.io/js/sriracha-admin)
+  [![npm version](https://badge.fury.io/js/sriracha.svg)](https://badge.fury.io/js/sriracha)
 
 Sriracha is an Express app that can be mounted as middleware to any url in your application.  The admin site's routes and editing interface are generated dynamically based on your Mongoose Models.  Options are available to control the look and feel of the admin site.
 
@@ -15,14 +15,14 @@ Sriracha is an Express app that can be mounted as middleware to any url in your 
 1. Install Sriracha:
 
   ```
-  npm install --save sriracha-admin
+  npm install --save sriracha
   ```
 
 2. Include Sriracha in your express app and mount it to a url.
 
   ```
   var express = require('express');
-  var admin = require('sriracha-admin');
+  var admin = require('sriracha');
 
   app = express();
   ...
@@ -37,14 +37,14 @@ Sriracha is an Express app that can be mounted as middleware to any url in your 
 
 ## Setting Options Globally
 Options can be set globally through the options object passed to the middleware.
-  
+
   ```
   var options = {...};
   app.use('/admin', admin(options));
   ```
 
-**username**<br> 
-*default*: `'admin'` User name used to access admin backend. 
+**username**<br>
+*default*: `'admin'` User name used to access admin backend.
 
 **password**<br>
 *default*: `'admin'` Password used to access the admin backend.
@@ -71,40 +71,40 @@ User: {
 *default*: `undefined` A setting of false will hide this field from the admin.
 
 ## Field Types
-Field types are set automatically by Sriracha based on the Mongo schema type.  However, they can also be customized.  Using the 'adminFieldType' option.  See the [setting options on a schema](#setting-options-on-a-schema) for examples of how to set custom field types. 
+Field types are set automatically by Sriracha based on the Mongo schema type.  However, they can also be customized.  Using the 'adminFieldType' option.  See the [setting options on a schema](#setting-options-on-a-schema) for examples of how to set custom field types.
 
  Sriracha currently supports the following field types:
 
  **text**<br>
-*default*: String and ObjectId schema types. 
+*default*: String and ObjectId schema types.
 A simple string input field.
 
 ![text field](_img/fields/text.png)
 
 **textarea**<br>
-*default*: none 
+*default*: none
 The text area field allows easy inline editing of larger portions of text.  The textarea field uses [TinyMCE](https://www.tinymce.com/) and stores it's results as HTML.
 
 ![textarea field](_img/fields/textarea.png)
 
 **date**<br>
-*default*: Date schema type. 
+*default*: Date schema type.
 A date picker field using the [datepicker jquery plugin](https://eonasdan.github.io/bootstrap-datetimepicker).
 
 ![date field](_img/fields/date.png)
 
 **array**<br>
-*default*: Array schema type. 
+*default*: Array schema type.
 An input that accepts a comma separated list of values.
 
 ![date field](_img/fields/array.png)
 
 **checkbox**<br>
-*default*: Boolean schema type. 
+*default*: Boolean schema type.
 A checkbox that setts a boolean field to `true` or `false.`
 
 **ref**<br>
-*default*: Reference to other documents. 
+*default*: Reference to other documents.
 An input of tags representing references to other documents.
 
 ![date field](_img/fields/ref.png)
@@ -115,7 +115,7 @@ All `<collection>` level options can be set on an individual schema as well. The
 To set schema level options, provide the option, prefixed with `admin`.
 
 For example, the following schema would set the `lastName` to the search field for users, and would hide the `email` and `onboarding.signupDate` fields.
-    
+
   ```
   ...
   var Schema = mongoose.Schema;
