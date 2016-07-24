@@ -27,7 +27,11 @@ describe('using simple example', function() {
   after(function(done) {
     var mock = require('../examples/simple/mock');
     console.log('closing simple server');
-    server.close();
+    try {
+      server.close();
+    } catch(e) {
+      console.log(e);
+    }
     mock.destroy(done);
   });
 
