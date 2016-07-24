@@ -1,28 +1,32 @@
 'use strict';
 
 var express = require('express'),
-    session = require('express-session'),
-    mongoose = require('mongoose'),
-    bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    routes = require('./lib/controllers/main'),
-    _ = require('lodash'),
-    Collection = require('./lib/models/Collection'),
-    Strategy = require('./lib/strategy'),
-    Options = require('./lib/options');
+  session = require('express-session'),
+  mongoose = require('mongoose'),
+  bodyParser = require('body-parser'),
+  methodOverride = require('method-override'),
+  routes = require('./lib/controllers/main'),
+  _ = require('lodash'),
+  Collection = require('./lib/models/Collection'),
+  Strategy = require('./lib/strategy'),
+  Options = require('./lib/options');
 
 var admin = express();
 
 // this session store is only used if parent app
 // DOES NOT already have a session store.
-admin.use(session({ 
-    secret: 'Siracha!',
-    saveUninitialized: true
-})); 
+admin.use(session({
+  secret: 'Siracha!',
+  saveUninitialized: true,
+  resave: false
+}));
 
 admin.set('view engine', 'jade');
 admin.set('views', __dirname + '/lib/views');
-admin.use(bodyParser.urlencoded({ extended: false }));
+admin.use(bodyParser.urlencoded({
+  extended: false
+}));
+
 // allow delete method
 admin.use(methodOverride(function(req, res) {
   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -34,72 +38,80 @@ admin.use(methodOverride(function(req, res) {
 }));
 
 admin.use('/static', express.static(__dirname + '/lib/static'));
-admin.use('/components', express.static(__dirname + '/components'));    
+admin.use('/components', express.static(__dirname + '/components'));
 
 
 module.exports = function(userDefined) {
-    var userDefined = userDefined || {};
+  var userDefined = userDefined || {};
 
-    var options = Options(userDefined);
-    
-    var Models;
-    var collectionNames;
-    var collections;
-    var docs;
-    var strategy;
+  var options = Options(userDefined);
 
-    // models default to all models in a Mongoose connection
-    if(options.models.length > 0) {
-        Models = options.models.map(function(name) {
-            return mongoose.models[name];
-        });
-    } else {
-        Models = mongoose.models;
+  var Models;
+  var collectionNames;
+  var collections;
+  var docs;
+  var strategy;
+
+  // models default to all models in a Mongoose connection
+  if (options.models.length > 0) {
+    Models = options.models.map(function(name) {
+      return mongoose.models[name];
+    });
+  } else {
+    Models = mongoose.models;
+  };
+
+  // create map of plural collection names for easy lookup
+  // e.g. {'users': 'User', ...}
+  collectionNames = _.mapValues(_.mapKeys(Models, function(model) {
+    return model.collection.name;
+  }), function(model) {
+    return model.modelName;
+  });
+
+  // extend models with methods for use with Siracha
+  collections = _.mapValues(Models, function(model) {
+    return Collection(model, options);
+  });
+
+  admin.locals._mongooseModels = Models;
+  admin.locals.collectionNames = collectionNames;
+  admin.locals.collections = collections;
+
+  // get mount path for use in routing static
+  admin.use(function(req, res, next) {
+    debugger;
+    var mountpath = admin.mountpath;
+    if(mountpath === '/') {
+      mountpath = '';
+    }
+    admin.locals.appPath = mountpath;
+    next();
+  });
+
+  admin.use(function(req, res, next) {
+    req.session.message = req.session.message || {
+      error: [],
+      success: [],
+      info: []
     };
-    
-    // create map of plural collection names for easy lookup
-    // e.g. {'users': 'User', ...}
-    collectionNames = _.mapValues(_.mapKeys(Models, function(model) {
-        return model.collection.name;
-    }), function(model) {
-        return model.modelName;
-    });
+    admin.locals.message = req.session.message;
+    next();
+  });
 
-    // extend models with methods for use with Siracha
-    collections = _.mapValues(Models, function(model) {
-        return Collection(model, options);
-    });
+  strategy = new Strategy(options);
 
-    admin.locals._mongooseModels = Models;
-    admin.locals.collectionNames = collectionNames;
-    admin.locals.collections = collections;
-    
-    // get mount path for use in routing static
-    admin.use(function(req, res, next) {
-        var mountpath = admin.mountpath;
-        admin.locals.appPath = mountpath;
-        next();
-    });
-    
-    admin.use(function (req, res, next) {
-        req.session.message = req.session.message || { error: [], success: [], info: [] };
-        admin.locals.message  = req.session.message;
-        next();
-    });
+  admin.use(strategy.middleware.bind(strategy));
 
-    strategy = new Strategy(options);
-    
-    admin.use(strategy.middleware.bind(strategy));
+  admin.get('/', routes.main);
 
-    admin.get('/', routes.main);
+  admin.post('/login', strategy.login.bind(strategy));
+  admin.post('/logout', strategy.logout);
 
-    admin.post('/login', strategy.login.bind(strategy));
-    admin.post('/logout', strategy.logout);
+  admin.get('/:collection', routes.collection);
+  admin.post('/:collection/suggest', routes.suggest);
+  admin.all('/:collection/new', routes.newDoc);
+  admin.all('/:collection/:doc', routes.doc);
 
-    admin.get('/:collection', routes.collection);
-    admin.post('/:collection/suggest', routes.suggest);
-    admin.all('/:collection/new', routes.newDoc);
-    admin.all('/:collection/:doc', routes.doc);
-    
-    return admin;
+  return admin;
 };
